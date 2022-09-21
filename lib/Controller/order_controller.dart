@@ -120,7 +120,7 @@ class OrderController extends GetxController {
         //     .collection("my_orders_accepted")
         //     .add({
         //   "name": customerModel.customer_name,
-        //   "customer_id": customerModel.customer_id,
+        //   "delivery_boy_id": customerModel.delivery_boy_id,
         //   "email": customerModel.,
         //   "location": customerModel.location,
         //   "address": customerModel.address,
@@ -213,6 +213,103 @@ class OrderController extends GetxController {
   Future<void> requestForComplete(String id) async {
     await firstore.collection("all_requests").doc(id).update({
       "isComplete": true,
+    });
+  }
+
+  // <=============================== Getting active orders ==============================>
+  void activeFunc() {
+    activeList.bindStream(showingActiveStatus());
+  }
+
+  Rxn<List<AllRequestModel>> activeList = Rxn<List<AllRequestModel>>();
+  List<AllRequestModel>? get active => activeList.value;
+  Stream<List<AllRequestModel>> showingActiveStatus() {
+    //print('Object: ${AuthController.auth!.uid}');
+    return FirebaseFirestore.instance
+        .collection('all_requests')
+        .where("delivery_boy_id",
+            isEqualTo: Get.find<AuthController>().user!.uid)
+        .where("status", isEqualTo: 'On the way')
+        .snapshots()
+        .map((QuerySnapshot query) {
+      List<AllRequestModel> retVal = [];
+      for (var element in query.docs) {
+        retVal.add(AllRequestModel.fromSnapshot(element));
+      }
+      print("aa length is${retVal.length.toString()}");
+      return retVal;
+    });
+  }
+
+  // <=============================== Getting pending orders ==============================>
+  void pendingFunc() {
+    pendingList.bindStream(showingPendingStatus());
+  }
+
+  Rxn<List<AllRequestModel>> pendingList = Rxn<List<AllRequestModel>>();
+  List<AllRequestModel>? get pending => pendingList.value;
+  Stream<List<AllRequestModel>> showingPendingStatus() {
+    return FirebaseFirestore.instance
+        .collection('all_requests')
+        .where("delivery_boy_id",
+            isEqualTo: Get.find<AuthController>().user!.uid)
+        .where("status", isEqualTo: 'Pending')
+        .snapshots()
+        .map((QuerySnapshot query) {
+      List<AllRequestModel> retVal = [];
+      for (var element in query.docs) {
+        retVal.add(AllRequestModel.fromSnapshot(element));
+      }
+      print("aa length is${retVal.length.toString()}");
+      return retVal;
+    });
+  }
+
+  // <=============================== Getting completed orders ==============================>
+  void completedFunc() {
+    compList.bindStream(showingCompletedStatus());
+  }
+
+  Rxn<List<AllRequestModel>> compList = Rxn<List<AllRequestModel>>();
+  List<AllRequestModel>? get compl => compList.value;
+  Stream<List<AllRequestModel>> showingCompletedStatus() {
+    return FirebaseFirestore.instance
+        .collection('all_requests')
+        .where("delivery_boy_id",
+            isEqualTo: Get.find<AuthController>().user!.uid)
+        .where("status", isEqualTo: 'Completed')
+        .snapshots()
+        .map((QuerySnapshot query) {
+      List<AllRequestModel> retVal = [];
+      for (var element in query.docs) {
+        retVal.add(AllRequestModel.fromSnapshot(element));
+      }
+      print("comple length is${retVal.length.toString()}");
+      return retVal;
+    });
+  }
+
+  // <=============================== Getting cancelled orders ==============================>
+  void cancelledFunc() {
+    cancelList.bindStream(showingCancelledStatus());
+  }
+
+  Rxn<List<AllRequestModel>> cancelList = Rxn<List<AllRequestModel>>();
+  List<AllRequestModel>? get cancel => cancelList.value;
+  Stream<List<AllRequestModel>> showingCancelledStatus() {
+    return FirebaseFirestore.instance
+        .collection('all_requests')
+        .where("delivery_boy_id",
+            isEqualTo: Get.find<AuthController>().user!.uid)
+        .where("status", isEqualTo: 'Cancelled')
+        .snapshots()
+        .map((QuerySnapshot query) {
+      List<AllRequestModel> retVal = [];
+      for (var element in query.docs) {
+        retVal.add(AllRequestModel.fromSnapshot(element));
+      }
+      print("comple length is${retVal.length.toString()}");
+      return retVal;
     });
   }
 

@@ -16,7 +16,7 @@ class ProfileScreen extends StatelessWidget {
     final statusbar = MediaQuery.of(context).padding.top;
 
     return Scaffold(
-      appBar: AppBar(),
+      //appBar: AppBar(),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(

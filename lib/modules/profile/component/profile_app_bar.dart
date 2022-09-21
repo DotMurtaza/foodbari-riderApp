@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodbari_deliver_app/Controller/auth_controller.dart';
+import 'package:foodbari_deliver_app/Controller/order_controller.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -13,6 +14,7 @@ class ProfileAppBar extends StatelessWidget {
 
   ProfileAppBar({Key? key, this.height = 174}) : super(key: key);
   AuthController controller = Get.put(AuthController());
+  var orderController = Get.find<OrderController>();
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -56,31 +58,33 @@ class ProfileAppBar extends StatelessWidget {
                 child: Container(
                   alignment: Alignment.center,
                   height: 100,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _headerItem(
-                        '00',
-                        'Active',
-                        () {},
-                      ),
-                      _headerItem(
-                        '02',
-                        'New Order',
-                        () {},
-                      ),
-                      _headerItem(
-                        "34",
-                        'Cooking',
-                        () {},
-                      ),
-                      _headerItem(
-                        '9',
-                        'Delivered',
-                        () {},
-                      ),
-                    ],
+                  child: Obx(
+                    () => Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        _headerItem(
+                          orderController.activeList.value!.length.toString(),
+                          'Active',
+                          () {},
+                        ),
+                        _headerItem(
+                          orderController.pending!.length.toString(),
+                          'Pending',
+                          () {},
+                        ),
+                        _headerItem(
+                          orderController.cancelList.value!.length.toString(),
+                          'Cancelled',
+                          () {},
+                        ),
+                        _headerItem(
+                          orderController.compList.value!.length.toString(),
+                          'Delivered',
+                          () {},
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

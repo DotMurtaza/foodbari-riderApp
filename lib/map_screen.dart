@@ -101,6 +101,7 @@ class _MapScreenState extends State<MapScreen> {
               future: getPolyPoints(),
               builder: (context, snapshot) {
                 return GoogleMap(
+
                   initialCameraPosition: CameraPosition(
                       target: LatLng(authController.currentLocation!.latitude!,
                           authController.currentLocation!.longitude!),
@@ -114,6 +115,7 @@ class _MapScreenState extends State<MapScreen> {
                   },
                   markers: {
                     Marker(
+                    
                       markerId: const MarkerId("currentLocation"),
                       position: LatLng(
                           authController.currentLocation!.latitude!,

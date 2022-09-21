@@ -24,6 +24,12 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   void initState() {
     super.initState();
+    //  Get.put(ProductController());
+    // Get.put(RequestController());
+    orderController.activeFunc();
+    orderController.pendingFunc();
+    orderController.completedFunc();
+    orderController.cancelledFunc();
     orderController.getOrderStatus("Completed");
     setState(() {});
     authController.getCurrentLocation();
